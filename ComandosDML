@@ -1,0 +1,89 @@
+# Comandos DML (Data Manipulation Language): Usados para manipular dados em tabelas do banco de dados.
+#
+# INSERT: Insere novos registros.
+# UPDATE: Atualiza registros existentes.
+# DELETE: Remove registros de uma tabela.
+# SELECT: Consulta e recupera dados.
+#
+# Esses comandos lidam diretamente com os dados e permitem o uso de transações (COMMIT/ROLLBACK).
+
+-- Exibindo todos os registros das tabelas
+SELECT * FROM customers;
+SELECT * FROM `order details`;
+SELECT * FROM products;
+SELECT * FROM shippers;
+SELECT * FROM suppliers;
+SELECT * FROM categories;
+
+-- Seleciona as colunas 'customerID', 'companyName' e 'Address' da tabela 'customers'
+SELECT customerID AS CodigoCliente, -- Renomeia a coluna 'customerID' para 'CodigoCliente'
+	companyName AS 'Nome da Empresa', 
+	Address AS endereço
+FROM customers;
+
+SELECT ProductID, ProductName, UnitPrice, UnitsInStock, CategoryID
+FROM products
+WHERE UnitPrice > 10 AND 
+		UnitsInStock > 20 AND
+          CategoryID = 2;
+          
+SELECT ProductID, ProductName, UnitPrice, UnitsInStock
+FROM Products
+ORDER BY UnitPrice DESC;
+
+SELECT min(UnitPrice) AS menorpreco, 
+	   max(UnitPrice) AS maiorvalor, 
+       sum(UnitPrice) AS somatoria,
+       avg(UnitPrice) AS mediavalor,
+       count(ProductID) AS QTDProdutos
+FROM products;
+
+SELECT ProductID, ProductName, UnitPrice
+FROM products
+WHERE UnitPrice = (SELECT min(UnitPrice) FROM products);
+
+SELECT CategoryID AS CodigoCategoria, 
+count(ProductID) AS QTDProds
+FROM products
+GROUP BY CategoryID;
+
+SELECT CustomerID AS CodigoCliente, 
+count(OrderID) AS QTDPedidos
+FROM orders
+GROUP BY CustomerID;
+
+SELECT EmployeeID AS CodigoFuncionarios, 
+count(OrderID) AS QTDPedidos
+FROM orders
+GROUP BY EmployeeID
+ORDER BY QTDPedidos ASC;
+
+SELECT *
+FROM customers
+WHERE contactName LIKE '%Ana %';
+
+-- Inserindo registros na tabela shippers (transportadores)
+INSERT INTO shippers (companyName, phone)
+VALUES 
+    ("Correios", "119999-9999"),
+    ("DHL", "119999-9999"),
+    ("Mercadolivre", "119999-9999");
+
+-- Inserindo um registro na tabela products (produtos)
+INSERT INTO products (ProductName, SupplierID, CategoryID, QuantityPerUnit, Unitprice, UnitsInStock, UnitsOnOrder, ReorderLevel, Discontinued)
+VALUES 
+    ("Guarana Antartica", 2, 3, "duzia", 25.99, 100, 10, 0, TRUE);
+
+-- Atualizando o nome de um produto na tabela 'products' (altera o nome do produto com productID = 78)
+UPDATE products
+SET productName = 'Guarana Dolly'
+WHERE productID = 78;
+
+-- Atualizando o preço unitário do produto com productID = 78
+UPDATE products
+SET unitprice = 19.75
+WHERE productID = 78;
+
+-- Deletando o registro do transportador (shipper) com shipperID = 5
+DELETE FROM shippers
+WHERE shipperID = 5;
