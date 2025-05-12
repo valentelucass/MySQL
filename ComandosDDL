@@ -1,0 +1,101 @@
+# Comandos DDL (Data Definition Language) são usados para definir e gerenciar estruturas de banco de dados.
+# Eles alteram a estrutura do banco e têm efeito permanente (autocommit).
+# Principais comandos DDL:
+#
+# CREATE: Cria bancos de dados, tabelas e índices.
+# ALTER: Modifica a estrutura das tabelas (adicionar, modificar ou excluir colunas).
+# DROP: Remove bancos de dados ou tabelas.
+# RENAME: Renomeia tabelas ou colunas.
+# TRUNCATE: Remove todos os registros de uma tabela sem apagar sua estrutura.
+
+create database loja;
+use loja;
+
+create table clientes
+(
+codigoCliente int primary key,
+nome varchar(50),
+logradouro varchar(50),
+numero varchar(8),
+bairro varchar(50),
+cep char(8),
+cidade varchar(20),
+UF char(2),
+CNPJ char(14),
+IE varchar(20)
+);
+
+create table produtos
+(
+codigoProduto int primary key,
+nome varchar(50),
+precoUnitario decimal(10,4),
+quantidadeEstoque int
+);
+
+create table vendedores
+(
+codigoVendedor int primary key,
+nome varchar(50),
+salarioFixo decimal(10,4)
+);
+
+create table pedidos
+(
+codigoPedido int primary key,
+dataPedido timestamp,
+dataEntrega datetime,
+codigoVendedor int,
+codigoCliente int,
+constraint fk1 foreign key(codigoVendedor) references vendedores(codigoVendedor),
+constraint fk2 foreign key(codigoCliente) references clientes(codigoCliente)
+);
+
+create table itemPedidos
+(
+quantidade int,
+codigoProduto int,
+codigoPedido int,
+constraint fk3 foreign key(codigoProduto) references produtos(codigoProduto),
+constraint fk4 foreign key(codigoPedido) references pedidos(codigoPedido),
+constraint pk10 primary key(codigoProduto, codigoPedido)
+);
+
+alter table produtos add column statusprod bit;
+alter table clientes add column datanasc datetime;
+alter table clientes modify nome varchar(100);
+
+-- apaga o relacionamento
+alter table itemPedidos drop constraint fk3;
+
+-- altera os tipos de dados
+alter table produtos modify codigoProduto bigint;
+alter table itemPedidos modify codigoProduto bigint;
+
+-- religando a chave estrangeira FK3 novamente
+alter table itemPedidos add constraint fk3 foreign key(codigoProduto) references produtos(codigoProduto);
+
+-- alterar o nome do cliente
+alter table clientes change nome nomeCliente varchar(100);
+alter table produtos change nome nomeProduto varchar(100);
+
+alter table produtos drop column statusprod;
+
+
+
+
+
+-- Remove a tabela 'itemPedidos'
+drop table itemPedidos;
+
+-- Remove a tabela 'pedidos'
+drop table pedidos;
+
+-- Remove a tabela 'vendedores'
+drop table vendedores;
+
+-- Remove a tabela 'produtos'
+drop table produtos;
+
+-- Remove a tabela 'clientes'
+drop table clientes;
