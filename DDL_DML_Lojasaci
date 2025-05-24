@@ -1,0 +1,67 @@
+CREATE DATABASE lojaSaci;
+USE lojaSaci;
+
+CREATE TABLE cliente (
+codigoCliente INT PRIMARY KEY,
+nomeCliente VARCHAR(20),
+telefoneCliente VARCHAR(10),
+cidadeCliente VARCHAR(10),
+UFCliente VARCHAR(2)
+);
+
+CREATE TABLE fornecedor (
+codigoFornecedor INT PRIMARY KEY,
+nomeFornecedor VARCHAR(30),
+telefoneFornecedor VARCHAR(10),
+cidadeFornecedor VARCHAR(20),
+UFFornecedor VARCHAR(2)
+);
+
+CREATE TABLE pedido (
+codigoPedido INT PRIMARY KEY,
+dataPedido DATETIME,
+codigoCliente INT,
+CONSTRAINT fk1 FOREIGN KEY (codigoCliente) REFERENCES cliente (codigoCliente)
+);
+
+CREATE TABLE estoque (
+codigoEstoque INT PRIMARY KEY,
+descricaoEstoque VARCHAR(50),
+unidade SMALLINT,
+preco DECIMAL(10,4),
+qtdEstoque SMALLINT,
+estoqueMinimo SMALLINT,
+pontoPedido SMALLINT,
+codigoFornecedor INT,
+CONSTRAINT fk4 FOREIGN KEY (codigoFornecedor) REFERENCES fornecedor (codigoFornecedor)
+);
+
+CREATE TABLE itens (
+qtdPedido SMALLINT,
+subtotal DECIMAL(10,4),
+codigoPedido INT,
+codigoEstoque INT,
+CONSTRAINT fk2 FOREIGN KEY (codigoPedido) REFERENCES pedido (codigoPedido),
+CONSTRAINT fk3 FOREIGN KEY (codigoEstoque) REFERENCES estoque (codigoEstoque)
+);
+
+-- ---------------------------------------------------------------------------------------- 
+-- --------------------------- COMANDOS DML ABAIXO ----------------------------------------
+-- ----------------------------------------------------------------------------------------
+
+
+-- a) Quais os itens que foram comprados pelo cliente de numéro 210 ? Mostre o código do item. 
+SELECT itens.codigoEstoque
+FROM cliente
+JOIN pedido ON cliente.codigoCliente = pedido.codigoCliente
+JOIN itens ON pedido.codigoPedido = itens.codigoPedido
+WHERE cliente.codigoCliente = 210;
+
+-- b) Quais os itens no estoque que estão abaixo do ponto de pedido? Apresente a descrição, quantidade e ponto de pedido. 
+SELECT * FROM cliente
+WHERE cliente.codigoCliente = cliente.telefoneCliente;
+
+
+SELECT nomeCliente AS "Nome do cliente", telefoneCliente AS "Telefone do cliente", cidadeCliente AS "Cidade do cliente"
+FROM cliente;
+
