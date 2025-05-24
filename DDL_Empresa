@@ -1,0 +1,47 @@
+CREATE DATABASE empresa;
+USE empresa;
+
+CREATE TABLE departamento (
+CodigoDepartamento INT PRIMARY KEY,
+nomeDepartamento VARCHAR(50)
+);
+
+CREATE TABLE empregados (
+CPFempregado CHAR(11) PRIMARY KEY,
+nomeEmpregado VARCHAR(100),
+dataNascimento DATE,
+RG CHAR(15),
+Rua VARCHAR(50),
+Numero VARCHAR(8),
+CEP CHAR(8),
+Bairro VARCHAR(50),
+Cidade VARCHAR(20),
+Estado CHAR(2),
+CodigoDepartamento INT,
+CONSTRAINT fk1 FOREIGN KEY (CodigoDepartamento) REFERENCES departamento (CodigoDepartamento)
+);
+
+CREATE TABLE projetos (
+CodigoProjeto INT PRIMARY KEY,
+nomeProjeto VARCHAR(20),
+dataInicio DATETIME,
+dataPrevisaoFim DATE,
+CodigoDepartamento INT,
+CONSTRAINT fk2 FOREIGN KEY (CodigoDepartamento) REFERENCES departamento (CodigoDepartamento)
+);
+
+CREATE TABLE tarefas (
+CodigoTarefa INT PRIMARY KEY,
+nomeTarefa VARCHAR(20)
+);
+
+CREATE TABLE alocacao (
+dataAlocacao DATE,
+dataFimAlocacao DATETIME,
+CodigoTarefa INT,
+CPFempregado CHAR(11),
+CodigoProjeto INT,
+CONSTRAINT fk3 FOREIGN KEY (CodigoTarefa) REFERENCES tarefas (CodigoTarefa),
+CONSTRAINT fk4 FOREIGN KEY (CPFempregado) REFERENCES empregados (CPFempregado),
+CONSTRAINT fk5 FOREIGN KEY (CodigoProjeto) REFERENCES projetos (CodigoProjeto)
+);
