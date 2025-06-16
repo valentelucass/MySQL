@@ -1,7 +1,3 @@
-Perfeito, Lucas! Vou criar um exemplo de `README.md` para esse repositório com base no que vejo na imagem. O foco será explicar cada arquivo e o propósito geral, em português:
-
----
-
 ## 📂 Repositório de Scripts SQL — DDL e DML
 
 Este repositório contém scripts SQL para prática e organização de comandos **DDL** (Data Definition Language) e **DML** (Data Manipulation Language). Ele foi criado como parte de estudos de Banco de Dados, para auxiliar na criação e manipulação de tabelas em cenários simulados.
